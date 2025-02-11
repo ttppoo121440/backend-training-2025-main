@@ -8,11 +8,12 @@
 
 ````bash
 npm install
+````
 
 ### 執行系統
 ```bash
 npm run dev
-
+````
 ## 系統指令
 
 - **使用預設資料**: `--default`

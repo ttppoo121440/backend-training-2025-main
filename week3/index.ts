@@ -34,16 +34,20 @@ const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
 });
-console.log(`[指令]:
- 使用預設資料:#Default 
- 清空資料指令：#Clear 
- 結束指令：#exit
- 獲取總金額：#calc
- 篩選為購買：#filter
- 顯示目前歷史資料：#showHis
+
+function cmd() {
+  console.log(`[指令]:
+ 使用預設資料:--default 
+ 清空資料指令：--clear 
+ 結束指令：--exit
+ 獲取總金額：--cal
+ 篩選為購買：--filter
+ 顯示目前歷史資料：--his
+ 顯示指令：--help
  目前會員:${members}
  ==================樂呵呵健身房-購買課程開始=====================
  `);
+}
 
 function AppStart() {
   rl.question("請輸入您的名字 :", (input) => {
@@ -111,7 +115,7 @@ function getTotalPrice() {
 }
 
 function filterNoBuyMember() {
-  console.log(`===============為購買課程會員===============`);
+  console.log(`\n===============[ 顯示未購買課程會員 ]===============`);
   //知識點:Set會自動替除重複資料
   const buyers = new Set(purchaseRecords.map((record) => record.name));
   return members.filter((member) => !buyers.has(member));
@@ -121,31 +125,41 @@ function filterNoBuyMember() {
 // 處理輸入的函式
 function handleInput(input: string) {
   switch (input) {
-    case "#filter":
+    //顯示已購買會員
+    case "--filter":
       console.log(filterNoBuyMember());
       break;
-    case "#calc":
+    //目前的總營業額
+    case "--cal":
       console.log(`目前的總營業額 ：${getTotalPrice()}元`);
       break;
-    case "#showHis":
+    //目前的營業紀錄
+    case "--his":
       showCourseRecords();
       break;
-    case "#Default":
+    //寫入預設資料
+    case "--default":
       getDefaultValue();
       break;
-    case "#Clear":
+    //清空所有資料
+    case "--clear":
       deleteRecords();
       break;
-    case "#exit":
+    //顯示指令
+    case "--help":
+      console.log("\x1Bc");
+      cmd();
+      break;
+    case "--exit":
       console.log("程式結束。");
       rl.close(); // 結束程序
       return;
     default:
       if (members.includes(input)) {
         rl.question("請輸入課堂數量: ", (inputCount) => {
-          const count = parseInt(inputCount.trim(), 10);
-          if (isNaN(count)) {
-            console.log("課堂數量必須是數字！請重新輸入");
+          const count = Number(inputCount);
+          if (isNaN(count) || !Number.isInteger(count) || count <= 0) {
+            console.log("課堂數量必須是一個正整數！請重新輸入");
           } else {
             addPurchaseRecord({ name: input, courseCount: count });
             console.log(

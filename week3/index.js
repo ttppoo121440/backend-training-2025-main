@@ -28,7 +28,9 @@ var rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
 });
-console.log("[\u6307\u4EE4]:\n \u4F7F\u7528\u9810\u8A2D\u8CC7\u6599:#Default \n \u6E05\u7A7A\u8CC7\u6599\u6307\u4EE4\uFF1A#Clear \n \u7D50\u675F\u6307\u4EE4\uFF1A#exit\n \u7372\u53D6\u7E3D\u91D1\u984D\uFF1A#calc\n \u7BE9\u9078\u70BA\u8CFC\u8CB7\uFF1A#filter\n \u986F\u793A\u76EE\u524D\u6B77\u53F2\u8CC7\u6599\uFF1A#showHis\n \u76EE\u524D\u6703\u54E1:".concat(members, "\n ==================\u6A02\u5475\u5475\u5065\u8EAB\u623F-\u8CFC\u8CB7\u8AB2\u7A0B\u958B\u59CB=====================\n "));
+function cmd() {
+    console.log("[\u6307\u4EE4]:\n \u4F7F\u7528\u9810\u8A2D\u8CC7\u6599:--default \n \u6E05\u7A7A\u8CC7\u6599\u6307\u4EE4\uFF1A--clear \n \u7D50\u675F\u6307\u4EE4\uFF1A--exit\n \u7372\u53D6\u7E3D\u91D1\u984D\uFF1A--cal\n \u7BE9\u9078\u70BA\u8CFC\u8CB7\uFF1A--filter\n \u986F\u793A\u76EE\u524D\u6B77\u53F2\u8CC7\u6599\uFF1A--his\n \u986F\u793A\u6307\u4EE4\uFF1A--help\n \u76EE\u524D\u6703\u54E1:".concat(members, "\n ==================\u6A02\u5475\u5475\u5065\u8EAB\u623F-\u8CFC\u8CB7\u8AB2\u7A0B\u958B\u59CB=====================\n "));
+}
 function AppStart() {
     rl.question("請輸入您的名字 :", function (input) {
         handleInput(input.trim());
@@ -75,7 +77,7 @@ function getTotalPrice() {
     return purchaseRecords.reduce(function (total, record) { return total + record.courseCount * record.Role.price; }, 0);
 }
 function filterNoBuyMember() {
-    console.log("===============\u70BA\u8CFC\u8CB7\u8AB2\u7A0B\u6703\u54E1===============");
+    console.log("\n===============[ \u986F\u793A\u672A\u8CFC\u8CB7\u8AB2\u7A0B\u6703\u54E1 ]===============");
     //知識點:Set會自動替除重複資料
     var buyers = new Set(purchaseRecords.map(function (record) { return record.name; }));
     return members.filter(function (member) { return !buyers.has(member); });
@@ -84,31 +86,41 @@ function filterNoBuyMember() {
 // 處理輸入的函式
 function handleInput(input) {
     switch (input) {
-        case "#filter":
+        //顯示已購買會員
+        case "--filter":
             console.log(filterNoBuyMember());
             break;
-        case "#calc":
+        //目前的總營業額
+        case "--cal":
             console.log("\u76EE\u524D\u7684\u7E3D\u71DF\u696D\u984D \uFF1A".concat(getTotalPrice(), "\u5143"));
             break;
-        case "#showHis":
+        //目前的營業紀錄
+        case "--his":
             showCourseRecords();
             break;
-        case "#Default":
+        //寫入預設資料
+        case "--default":
             getDefaultValue();
             break;
-        case "#Clear":
+        //清空所有資料
+        case "--clear":
             deleteRecords();
             break;
-        case "#exit":
+        //顯示指令
+        case "--help":
+            console.log("\x1Bc");
+            cmd();
+            break;
+        case "--exit":
             console.log("程式結束。");
             rl.close(); // 結束程序
             return;
         default:
             if (members.includes(input)) {
                 rl.question("請輸入課堂數量: ", function (inputCount) {
-                    var count = parseInt(inputCount.trim(), 10);
-                    if (isNaN(count)) {
-                        console.log("課堂數量必須是數字！請重新輸入");
+                    var count = Number(inputCount);
+                    if (isNaN(count) || !Number.isInteger(count) || count <= 0) {
+                        console.log("課堂數量必須是一個正整數！請重新輸入");
                     }
                     else {
                         addPurchaseRecord({ name: input, courseCount: count });

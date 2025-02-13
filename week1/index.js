@@ -115,7 +115,7 @@ let countdown = 28;
 // 4-2. 目前一起等待的機車有 8 台
 let bikeNum = 8
 // 4.3. Alex 望向天空，看到天上有 5 朵白雲和 1 顆太陽
-const cloudNum = 5;
+let cloudNum = 5;
 const sunNum = 1;
 
 // ### 題目六：情境題：簡單變數計算
@@ -159,8 +159,8 @@ console.log(
 // 以下程式碼請勿變更
 let a = 8; // 範例：宣告了一個 a 的變數，並賦予了一個 8 的數字型別
 let b = 0; // 宣告了一個 b 的變數，並賦予了一個 0 的數字型別
-a = 13;    // 將 a變數，賦予值 13 的數字型別
-a = b + 4; // 將 a變數，賦予值 b+4 => 4
+a = 13;    // 將 a變數重新賦予值 13 的數字型別
+a = b + 4; // 將 a變數重新賦予值 b+4 => 4
 a - b;     // 執行了 a - b 的計算，但結果未被賦值或儲存
 b += 1;    // 將 b變數，賦予值 b+1 => 1
 
@@ -181,10 +181,11 @@ let h = f + g;  //宣告變數h 並賦予值f+g => 912
 // 情境：請依照程式碼告知答案是多少，並在下方用註解方式寫上這五行程式碼做了什麼事
 // 以下程式碼請勿變更
 
-let numberArr1 = [5, 10, 15];
-let numberArr2 = numberArr1;
-numberArr2.push(20);
-numberArr2 = [25, 30, 35];
-console.log(numberArr1, numberArr2);
+let numberArr1 = [5, 10, 15];        // 宣告變數 numberArr1，並初始化為陣列為 [5, 10, 15]
+let numberArr2 = numberArr1;         // 將 numberArr1 傳參考賦值給 numberArr2，兩變數指向同一個陣列
+numberArr2.push(20);                 // 將數值 20 家入陣列，影響到 numberArr1 與 numberArr2，陣列變為 [5, 10, 15, 20]
+numberArr2 = [25, 30, 35];           // 重新指派 numberArr2 為一個新的陣列 [25, 30, 35]，numberArr1 仍指向原陣列[5, 10, 15, 20]
+console.log(numberArr1, numberArr2); // 輸出 numberArr1 為 [5, 10, 15, 20]，numberArr2 為 [25, 30, 35]
+
 
 [5, 10, 15, 20][25, 30, 35]

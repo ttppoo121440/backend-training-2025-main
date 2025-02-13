@@ -138,6 +138,7 @@ function handleInput(input) {
     AppStart();
 }
 // start
+cmd();
 AppStart();
 //第一階段：新增課程購買記錄（優惠定價）
 //第二階段：計算目前的總營業額

@@ -178,6 +178,7 @@ function handleInput(input: string) {
 }
 
 // start
+cmd();
 AppStart();
 
 //第一階段：新增課程購買記錄（優惠定價）
